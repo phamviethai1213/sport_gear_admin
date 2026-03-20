@@ -1,0 +1,14 @@
+.orders-page { display: flex; flex-direction: column; gap: 24px; }
+.order-code { font-family: monospace; font-size: 12px; font-weight: 700; color: var(--white); }
+.action-group { display: flex; gap: 6px; }
+
+.order-items { display: flex; flex-direction: column; gap: 6px; }
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--gray-light);
+  padding: 8px 12px;
+  background: var(--black-hover);
+  border-radius: var(--radius-sm);
+}

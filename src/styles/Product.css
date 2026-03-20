@@ -1,0 +1,23 @@
+.product-page { display: flex; flex-direction: column; gap: 24px; }
+.product-toolbar { display: flex; align-items: center; gap: 12px; }
+
+.product-cell { display: flex; align-items: center; gap: 12px; }
+.product-thumb {
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--black-hover);
+  border: 1px solid var(--black-border);
+  flex-shrink: 0;
+}
+.product-name { font-weight: 600; color: var(--white); font-size: 13px; }
+.product-desc { font-size: 11px; color: var(--gray-mid); margin-top: 2px; }
+
+.price-tag {
+  font-weight: 700;
+  color: var(--white);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.action-group { display: flex; gap: 6px; align-items: center; }
