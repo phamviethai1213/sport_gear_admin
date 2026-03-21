@@ -257,11 +257,13 @@ input, select, textarea { font-family: 'DM Sans', sans-serif; }
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
   backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease;
+  overflow-y: auto;
+  padding: 40px 16px;
 }
 .modal {
   background: var(--black-card);
@@ -272,6 +274,7 @@ input, select, textarea { font-family: 'DM Sans', sans-serif; }
   max-width: 480px;
   animation: slideUp 0.25s ease;
   box-shadow: var(--shadow);
+  flex-shrink: 0;
 }
 .modal-header {
   display: flex;

@@ -1,5 +1,6 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import withRouter from './withRouter';
 import '../styles/Menu.css';
 
 // SVG Icons cho từng mục nav
@@ -71,67 +72,74 @@ const navItems = [
   }
 ];
 
-const Menu = ({ user, onLogout }) => {
-  const navigate = useNavigate();
+class Menu extends Component {
+  handleLogout = () => {
+    if (this.props.onLogout) this.props.onLogout();
+    this.props.navigate('/login');
+  }
 
-  return (
-    <aside className="sidebar">
-      {/* Brand */}
-      <div className="sidebar-brand">
-        <div className="brand-mark">
-          <svg viewBox="0 0 100 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M99.9 6.3L25.1 35 .1 8.5C-.4 7.8.3 6.6 1.2 6.9l23.3 8.1L89.3.1c4.5-1.4 8.5 3.5 5.8 7.1L25 35"
-              fill="white"/>
-          </svg>
-        </div>
-        <div className="brand-text">
-          <span className="brand-name">Nike Store</span>
-          <span className="brand-sub">Admin Panel</span>
-        </div>
-      </div>
+  render() {
+    const { user } = this.props;
 
-      {/* Navigation */}
-      <nav className="sidebar-nav">
-        {navItems.map(group => (
-          <div className="nav-group" key={group.section}>
-            <p className="nav-section-label">{group.section}</p>
-            {group.items.map(item => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                end={item.path === '/'}
-                className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
-              >
-                <span className="nav-icon">{item.icon}</span>
-                <span className="nav-label">{item.label}</span>
-                <span className="nav-indicator" />
-              </NavLink>
-            ))}
+    return (
+      <aside className="sidebar">
+        {/* Brand */}
+        <div className="sidebar-brand">
+          <div className="brand-mark">
+            <svg viewBox="0 0 100 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M99.9 6.3L25.1 35 .1 8.5C-.4 7.8.3 6.6 1.2 6.9l23.3 8.1L89.3.1c4.5-1.4 8.5 3.5 5.8 7.1L25 35"
+                fill="white"/>
+            </svg>
           </div>
-        ))}
-      </nav>
-
-      {/* Footer */}
-      <div className="sidebar-footer">
-        <div className="user-block">
-          <div className="user-avatar-ring">
-            <div className="user-avatar">{(user?.name?.[0] || 'A').toUpperCase()}</div>
-          </div>
-          <div className="user-details">
-            <p className="user-name">{user?.name || 'Admin'}</p>
-            <p className="user-role">Administrator</p>
+          <div className="brand-text">
+            <span className="brand-name">Nike Store</span>
+            <span className="brand-sub">Admin Panel</span>
           </div>
         </div>
-        <button
-          className="logout-btn"
-          onClick={() => { onLogout?.(); navigate('/login'); }}
-          title="Đăng xuất"
-        >
-          {Icons.logout}
-        </button>
-      </div>
-    </aside>
-  );
-};
 
-export default Menu;
+        {/* Navigation */}
+        <nav className="sidebar-nav">
+          {navItems.map(group => (
+            <div className="nav-group" key={group.section}>
+              <p className="nav-section-label">{group.section}</p>
+              {group.items.map(item => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.path === '/'}
+                  className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
+                >
+                  <span className="nav-icon">{item.icon}</span>
+                  <span className="nav-label">{item.label}</span>
+                  <span className="nav-indicator" />
+                </NavLink>
+              ))}
+            </div>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div className="sidebar-footer">
+          <div className="user-block">
+            <div className="user-avatar-ring">
+              <div className="user-avatar">{(user?.name?.[0] || 'A').toUpperCase()}</div>
+            </div>
+            <div className="user-details">
+              <p className="user-name">{user?.name || 'Admin'}</p>
+              <p className="user-role">Administrator</p>
+            </div>
+          </div>
+          <button
+            className="logout-btn"
+            onClick={this.handleLogout}
+            title="Đăng xuất"
+          >
+            {Icons.logout}
+          </button>
+        </div>
+      </aside>
+    );
+  }
+}
+
+export default withRouter(Menu);

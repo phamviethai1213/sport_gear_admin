@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Login    from './components/Login';
@@ -12,6 +12,7 @@ import Orders   from './components/Orders';
 
 // ─────────────────────────────────────────────
 //  Layout bao quanh các trang cần sidebar/topbar
+//  (Giữ functional vì chỉ là pure render, không cần state/lifecycle)
 // ─────────────────────────────────────────────
 const AdminLayout = ({ user, onLogout, title, children }) => (
   <div className="admin-layout">
@@ -26,81 +27,89 @@ const AdminLayout = ({ user, onLogout, title, children }) => (
 );
 
 // ─────────────────────────────────────────────
-//  App root
+//  App root — Class Component
 // ─────────────────────────────────────────────
-const App = () => {
-  // Kiểm tra session đơn giản (thay bằng JWT thực tế nếu cần)
-  const [user, setUser] = useState(() => {
+class App extends Component {
+  constructor(props) {
+    super(props);
     const saved = localStorage.getItem('admin_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+    this.state = {
+      user: saved ? JSON.parse(saved) : null
+    };
+    this.handleLogin  = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
 
-  const handleLogin = (userData) => {
-    setUser(userData);
+  handleLogin(userData) {
+    this.setState({ user: userData });
     localStorage.setItem('admin_user', JSON.stringify(userData));
-  };
+  }
 
-  const handleLogout = () => {
-    setUser(null);
+  handleLogout() {
+    this.setState({ user: null });
     localStorage.removeItem('admin_user');
-  };
+  }
 
-  return (
-    <BrowserRouter>
-      <Routes>
+  render() {
+    const { user } = this.state;
 
-        {/* Trang đăng nhập */}
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />}
-        />
+    return (
+      <BrowserRouter>
+        <Routes>
 
-        {/* Dashboard */}
-        <Route path="/" element={
-          !user ? <Navigate to="/login" replace /> :
-          <AdminLayout user={user} onLogout={handleLogout} title="Dashboard">
-            <Home />
-          </AdminLayout>
-        } />
+          {/* Trang đăng nhập */}
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/" replace /> : <Login onLogin={this.handleLogin} />}
+          />
 
-        {/* Sản phẩm */}
-        <Route path="/products" element={
-          !user ? <Navigate to="/login" replace /> :
-          <AdminLayout user={user} onLogout={handleLogout} title="Sản phẩm">
-            <Product />
-          </AdminLayout>
-        } />
+          {/* Dashboard */}
+          <Route path="/" element={
+            !user ? <Navigate to="/login" replace /> :
+            <AdminLayout user={user} onLogout={this.handleLogout} title="Dashboard">
+              <Home />
+            </AdminLayout>
+          } />
 
-        {/* Chi tiết sản phẩm */}
-        <Route path="/products/:id" element={
-          !user ? <Navigate to="/login" replace /> :
-          <AdminLayout user={user} onLogout={handleLogout} title="Chi tiết sản phẩm">
-            <Detail />
-          </AdminLayout>
-        } />
+          {/* Sản phẩm */}
+          <Route path="/products" element={
+            !user ? <Navigate to="/login" replace /> :
+            <AdminLayout user={user} onLogout={this.handleLogout} title="Sản phẩm">
+              <Product />
+            </AdminLayout>
+          } />
 
-        {/* Danh mục */}
-        <Route path="/categories" element={
-          !user ? <Navigate to="/login" replace /> :
-          <AdminLayout user={user} onLogout={handleLogout} title="Danh mục">
-            <Category />
-          </AdminLayout>
-        } />
+          {/* Chi tiết sản phẩm */}
+          <Route path="/products/:id" element={
+            !user ? <Navigate to="/login" replace /> :
+            <AdminLayout user={user} onLogout={this.handleLogout} title="Chi tiết sản phẩm">
+              <Detail />
+            </AdminLayout>
+          } />
 
-        {/* Đơn hàng */}
-        <Route path="/orders" element={
-          !user ? <Navigate to="/login" replace /> :
-          <AdminLayout user={user} onLogout={handleLogout} title="Đơn hàng">
-            <Orders />
-          </AdminLayout>
-        } />
+          {/* Danh mục */}
+          <Route path="/categories" element={
+            !user ? <Navigate to="/login" replace /> :
+            <AdminLayout user={user} onLogout={this.handleLogout} title="Danh mục">
+              <Category />
+            </AdminLayout>
+          } />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to={user ? "/" : "/login"} replace />} />
+          {/* Đơn hàng */}
+          <Route path="/orders" element={
+            !user ? <Navigate to="/login" replace /> :
+            <AdminLayout user={user} onLogout={this.handleLogout} title="Đơn hàng">
+              <Orders />
+            </AdminLayout>
+          } />
 
-      </Routes>
-    </BrowserRouter>
-  );
-};
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to={user ? "/" : "/login"} replace />} />
+
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+}
 
 export default App;
