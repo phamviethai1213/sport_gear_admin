@@ -6,7 +6,7 @@ import '../styles/Product.css';
 
 const API = API_BASE;
 
-const EMPTY_FORM = { name: '', price: '', image: '', description: '', category: '', details: '' };
+const EMPTY_FORM = { name: '', slug: '', price: '', image: '', description: '', category: '', details: '' };
 
 class Product extends Component {
   constructor(props) {
@@ -57,6 +57,7 @@ class Product extends Component {
       editItem: p,
       form: {
         name:        p.name        || '',
+        slug:        p.slug        || '',
         price:       p.price       || '',
         image:       p.image       || '',
         description: p.description || '',
@@ -75,6 +76,7 @@ class Product extends Component {
     // Xây payload sạch: bỏ category nếu rỗng (tránh lỗi ObjectId validation)
     const payload = {
       name:        form.name,
+      slug:        form.slug        || '',
       price:       Number(form.price),
       image:       form.image       || '',
       description: form.description || '',
@@ -132,6 +134,7 @@ class Product extends Component {
 
     const fields = [
       { key: 'name',        label: 'Tên sản phẩm', placeholder: 'Nike Air Max...' },
+      { key: 'slug',        label: 'Slug sản phẩm', placeholder: 'nike-air-max...' },
       { key: 'price',       label: 'Giá (₫)',       placeholder: '1990000', type: 'number' },
       { key: 'image',       label: 'URL hình ảnh',  placeholder: 'https://...' },
       { key: 'description', label: 'Mô tả',         placeholder: 'Mô tả sản phẩm...', tag: 'textarea' },
