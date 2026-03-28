@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Login    from './components/Login';
@@ -14,17 +14,27 @@ import Orders   from './components/Orders';
 //  Layout bao quanh các trang cần sidebar/topbar
 //  (Giữ functional vì chỉ là pure render, không cần state/lifecycle)
 // ─────────────────────────────────────────────
-const AdminLayout = ({ user, onLogout, title, children }) => (
-  <div className="admin-layout">
-    <Menu user={user} onLogout={onLogout} />
-    <div className="admin-main">
-      <TopBar title={title} user={user} />
-      <main className="admin-content">
-        {children}
-      </main>
+import React, { Component, useState } from 'react';
+
+// ─────────────────────────────────────────────
+//  Layout bao quanh các trang cần sidebar/topbar
+// ─────────────────────────────────────────────
+const AdminLayout = ({ user, onLogout, title, children }) => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
+  return (
+    <div className="admin-layout">
+      <Menu user={user} onLogout={onLogout} isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="admin-main">
+        <TopBar title={title} user={user} toggleSidebar={toggleSidebar} />
+        <main className="admin-content">
+          {children}
+        </main>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─────────────────────────────────────────────
 //  App root — Class Component

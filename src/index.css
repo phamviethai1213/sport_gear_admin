@@ -329,3 +329,71 @@ input, select, textarea { font-family: 'DM Sans', sans-serif; }
 .text-sm { font-size: 12px; }
 .font-bold { font-weight: 700; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ==============================
+   RESPONSIVE DESIGN (Admin)
+   ============================== */
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  padding: 4px;
+  cursor: pointer;
+  margin-right: 12px;
+}
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .admin-main {
+    margin-left: 0;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 16px rgba(0,0,0,0.5);
+  }
+  .sidebar-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+  }
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-content {
+    padding: 16px;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .search-bar {
+    width: 100%;
+  }
+  
+  /* Cards/Tables */
+  .card {
+    padding: 16px;
+  }
+  .topbar-time {
+    display: none;
+  }
+  .topbar-divider {
+    display: none;
+  }
+}

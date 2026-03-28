@@ -79,10 +79,15 @@ class Menu extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, isOpen, onClose } = this.props;
 
     return (
-      <aside className="sidebar">
+      <>
+        <div 
+          className={`sidebar-overlay ${isOpen ? 'open' : ''}`} 
+          onClick={onClose}
+        />
+        <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         {/* Brand */}
         <div className="sidebar-brand">
           <div className="brand-mark">
@@ -138,6 +143,7 @@ class Menu extends Component {
           </button>
         </div>
       </aside>
+      </>
     );
   }
 }
